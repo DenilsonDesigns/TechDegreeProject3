@@ -14,7 +14,12 @@ const colorDiv= document.querySelector('#colors-js-puns');
 const tshirtColor= document.querySelector('#color');
 //t-shirt colors options
 const tshirtColOptions= tshirtColor.options;
-
+//activities fieldset
+const actField= document.querySelector('.activities');
+//activities fieldset checkboxes
+const actsChecks= actField.getElementsByTagName('input');
+//activities fieldset labels
+const actsLabels= actField.getElementsByTagName('label');
 
 //onload page function
 window.onload= ()=>{
@@ -22,6 +27,7 @@ window.onload= ()=>{
     nameInput.focus();
     //job role input hidden on load.
     yourJobRole.style.display= 'none';
+    //hiding tshirt color div
     colorDiv.style.display= 'none';
 }
 
@@ -58,5 +64,81 @@ tshirtDesign.addEventListener('click', (e)=>{
         colorDiv.style.display= 'none';
     }
 });
+
+
+//checkbox function
+function checkboxGrayOut(checked, conflicts){
+    actsChecks[checked].addEventListener('change', ()=>{
+        if(actsChecks[checked].checked == true){
+        actsChecks[conflicts].disabled= true;
+        actsLabels[conflicts].style.color= 'grey';
+        }else if(actsChecks[checked].checked== false){
+            actsChecks[conflicts].disabled= false;
+            actsLabels[conflicts].style.color= '';
+       } 
+    });
+}
+
+//calling checkbox function on conflicting events. 
+checkboxGrayOut(1, 3);
+checkboxGrayOut(2, 4);
+checkboxGrayOut(3, 1);
+checkboxGrayOut(4, 2);
+//*********************************************** */
+
+
+//create element to display cost
+const confCost= document.createElement('h4');
+
+
+
+for(let i=0; i< actsChecks.length; i++){
+    actsChecks[i].addEventListener('change', ()=>{
+        if(actsChecks[i].checked == true){
+            actField.appendChild(confCost);
+            confCost.style.display= 'block';
+        // }else if(actsChecks[i].checked == false){
+        //     confCost.style.display= 'none';
+       }
+    });
+}
+//need to fix behaviour in above, it removes total if you uncheck one even if some still remain checked. 
+
+
+//initialize variable of cost
+let costOfConfTotal= 0;
+//listener for first event
+actsChecks[0].addEventListener('change', ()=>{
+    if(actsChecks[0].checked== true){
+        costOfConfTotal+= 200;
+        confCost.textContent= 'Total: $' +costOfConfTotal;
+    }
+});
+actsChecks[0].addEventListener('change', ()=>{
+    if(actsChecks[0].checked== false){
+        costOfConfTotal-= 200;
+        confCost.textContent= 'Total: $' +costOfConfTotal;
+    }
+});
+//listener for remaining events
+for(let i=1; i<actsChecks.length; i++){
+    actsChecks[i].addEventListener('change', ()=>{
+        if(actsChecks[i].checked== true){
+            costOfConfTotal+= 100;
+            confCost.textContent= 'Total: $' +costOfConfTotal;
+        }
+    });
+    actsChecks[i].addEventListener('change', ()=>{
+        if(actsChecks[i].checked== false){
+            costOfConfTotal-= 100;
+            confCost.textContent= 'Total: $' +costOfConfTotal;
+        }
+    });
+}
+
+
+
+
+
 
 
