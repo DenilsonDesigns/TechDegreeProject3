@@ -21,6 +21,8 @@ const actsChecks= actField.getElementsByTagName('input');
 //activities fieldset labels
 const actsLabels= actField.getElementsByTagName('label');
 
+
+
 //onload page function
 window.onload= ()=>{
     //starting focus on first name field. 
@@ -29,6 +31,10 @@ window.onload= ()=>{
     yourJobRole.style.display= 'none';
     //hiding tshirt color div
     colorDiv.style.display= 'none';
+    //hiding bitcoin and paypal info by default
+    paypalInfo.style.display= 'none';
+    bitcoinInfo.style.display= 'none';
+    paymentOptions[0].disabled= true;
 }
 
 //event listener for "other" job role selection
@@ -136,8 +142,96 @@ for(let i=1; i<actsChecks.length; i++){
     });
 }
 
+//payment option selector
+const paymentSelector= document.querySelector('#payment');
+//payment option selector options
+const paymentOptions= paymentSelector.options;
+//credit card div
+const creditCardField= document.querySelector('#credit-card');
+//paypal info
+const paypalInfo= document.querySelector('#paypal-info');
+//bitcoin info
+const bitcoinInfo= document.querySelector('#bitcoin-info');
+//event listener to display correct info based on payment choice
+paymentSelector.addEventListener('click', (e)=>{
+    if(e.target.value== 'paypal'){
+        creditCardField.style.display= 'none';
+        paypalInfo.style.display= 'block';
+        bitcoinInfo.style.display= 'none';
+    }else if(e.target.value== 'bitcoin'){
+        creditCardField.style.display= 'none';
+        paypalInfo.style.display= 'none';
+        bitcoinInfo.style.display= 'block';
+    }else if(e.target.value== 'credit card'){
+        creditCardField.style.display= 'block';
+        paypalInfo.style.display= 'none';
+        bitcoinInfo.style.display= 'none'; 
+    }
+});
 
 
+
+const nameField= document.getElementById('name');
+const emailField= document.getElementById('mail');
+const form= document.querySelector('form');
+const submitButton= document.querySelector('button');
+const nameRegex= /^[a-zA-Z]{1,19}$/;
+const emailRegex= /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+const creditCardRegex= /^[0-9]{13,16}$/;
+const zipRegex= /^[0-9]{5}$/;
+const cvvRegex= /^[0-9]{3}$/;
+
+//function to validate atleast one activity selected
+function activitiesChecked(){
+    let count=0;
+    for(let i=0; i<actsChecks.length; i++){
+        if(actsChecks[i].checked==true){
+            count ++;
+        }
+    }
+    return count;
+}
+
+//validation functions****
+function nameValid(name){
+    return nameRegex.test(name);
+}
+
+//submit validation**********
+submitButton.addEventListener('click', (e)=>{
+    e.preventDefault();
+    //name field validation
+    if(nameValid(nameField)== false){
+        nameField.style.borderColor= 'red';
+    }
+    if(nameValid(nameField)== true){
+        nameField.style.borderColor= '';
+    }
+    //email validation
+    if(!emailRegex.test(emailField)){
+        emailField.style.borderColor= 'red';
+    }else{
+        emailField.style.borderColor= '';
+    }
+    //need to fix email else statement.
+
+    //check for registration of activities
+    if(activitiesChecked()==0){
+        actField.style.color= 'red';
+    }else{
+        actField.style.color= '';
+    }
+      
+});
+
+
+
+
+// If the selected payment option is "Credit Card," make sure the user has supplied a Credit Card number, a Zip Code, and a 3 number CVV value before the form can be submitted.
+// Credit Card field should only accept a number between 13 and 16 digits.
+// The Zip Code field should accept a 5-digit number.
+// The CVV should only accept a number that is exactly 3 digits long.
+// NOTE: Make sure your validation is only validating Credit Card info if Credit Card is the selected payment method.
 
 
 
