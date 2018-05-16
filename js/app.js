@@ -173,6 +173,9 @@ paymentSelector.addEventListener('click', (e)=>{
 
 const nameField= document.getElementById('name');
 const emailField= document.getElementById('mail');
+const cardNumField= document.getElementById('cc-num');
+const zipCode= document.getElementById('zip');
+const cvv= document.getElementById('cvv');
 const form= document.querySelector('form');
 const submitButton= document.querySelector('button');
 const nameRegex= /^[a-zA-Z]{1,19}$/;
@@ -180,6 +183,18 @@ const emailRegex= /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 const creditCardRegex= /^[0-9]{13,16}$/;
 const zipRegex= /^[0-9]{5}$/;
 const cvvRegex= /^[0-9]{3}$/;
+
+
+//validation functions****
+//name field
+function nameValid(name){
+    return nameRegex.test(name.value);
+}
+
+//email field
+function emailValid(email){
+    return emailRegex.test(email.value);
+}
 
 //function to validate atleast one activity selected
 function activitiesChecked(){
@@ -192,10 +207,22 @@ function activitiesChecked(){
     return count;
 }
 
-//validation functions****
-function nameValid(name){
-    return nameRegex.test(name);
+//credit card validation
+function cardNumberValid(cardNumber){
+    return creditCardRegex.test(cardNumber.value);
 }
+
+//zip validation
+function zipValid(zip){
+    return zipRegex.test(zip.value);
+}
+
+//cvv validation
+function cvvValid(cvvNumber){
+    return cvvRegex.test(cvvNumber.value);
+}
+
+
 
 //submit validation**********
 submitButton.addEventListener('click', (e)=>{
@@ -203,36 +230,45 @@ submitButton.addEventListener('click', (e)=>{
     //name field validation
     if(nameValid(nameField)== false){
         nameField.style.borderColor= 'red';
-    }
-    if(nameValid(nameField)== true){
+    }else if(nameValid(nameField)== true){
         nameField.style.borderColor= '';
     }
     //email validation
-    if(!emailRegex.test(emailField)){
+    if(emailValid(emailField)== false){
         emailField.style.borderColor= 'red';
-    }else{
+        alert('Please enter a valid email!');
+    }else if (emailValid(emailField)== true){
         emailField.style.borderColor= '';
     }
-    //need to fix email else statement.
-
+    
     //check for registration of activities
     if(activitiesChecked()==0){
         actField.style.color= 'red';
     }else{
         actField.style.color= '';
     }
+
+    //if credit card selected as payment, run this check
+    if(paymentSelector.value== "credit card"){
+        if(cardNumberValid(cardNumField)== false){
+            cardNumField.style.borderColor= 'red';
+        } else if (cardNumberValid(cardNumField)== true){
+            cardNumField.style.borderColor= '';
+        }
+    
+        if(zipValid(zipCode)== false){
+            zipCode.style.borderColor= 'red';
+        } else if (zipValid(zipCode)== true){
+            zipCode.style.borderColor= '';
+        }
+
+        if(cvvValid(cvv)== false){
+            cvv.style.borderColor= 'red';
+        } else if (cvvValid(cvv)== true){
+            cvv.style.borderColor= '';
+        }
+    }
       
 });
-
-
-
-
-// If the selected payment option is "Credit Card," make sure the user has supplied a Credit Card number, a Zip Code, and a 3 number CVV value before the form can be submitted.
-// Credit Card field should only accept a number between 13 and 16 digits.
-// The Zip Code field should accept a 5-digit number.
-// The CVV should only accept a number that is exactly 3 digits long.
-// NOTE: Make sure your validation is only validating Credit Card info if Credit Card is the selected payment method.
-
-
 
 
