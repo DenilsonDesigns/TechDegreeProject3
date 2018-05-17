@@ -35,6 +35,7 @@ window.onload= ()=>{
     paypalInfo.style.display= 'none';
     bitcoinInfo.style.display= 'none';
     paymentOptions[0].disabled= true;
+    paymentOptions[1].selected= true;
 }
 
 //event listener for "other" job role selection
@@ -236,7 +237,6 @@ submitButton.addEventListener('click', (e)=>{
     //email validation
     if(emailValid(emailField)== false){
         emailField.style.borderColor= 'red';
-        alert('Please enter a valid email!');
     }else if (emailValid(emailField)== true){
         emailField.style.borderColor= '';
     }
@@ -267,8 +267,30 @@ submitButton.addEventListener('click', (e)=>{
         } else if (cvvValid(cvv)== true){
             cvv.style.borderColor= '';
         }
+        if( (nameValid(nameField)== false)||
+        (emailValid(emailField)== false)||
+        (cardNumberValid(cardNumField)== false)||
+        (zipValid(zipCode)== false)||
+        (cvvValid(cvv)== false))
+        {
+        alert('Please correctly enter information marked red');
+        }else{
+            alert('Form successfully submitted');
+            window.location.reload();
+        }
     }
-      
+    if(paymentSelector.value!= "credit card"){
+        if((nameValid(nameField)== false)||
+        (emailValid(emailField)== false)){
+            alert('Please correctly enter information marked red');
+        }else{
+            alert('Form successfully submitted');
+            window.location.reload();
+        }
+    }
+ 
 });
+
+
 
 
