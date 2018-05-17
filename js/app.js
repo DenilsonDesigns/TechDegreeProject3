@@ -20,6 +20,8 @@ const actField= document.querySelector('.activities');
 const actsChecks= actField.getElementsByTagName('input');
 //activities fieldset labels
 const actsLabels= actField.getElementsByTagName('label');
+//payment info heading
+const paymentHeading= document.getElementById('paymentInfo');
 
 
 
@@ -212,6 +214,10 @@ function activitiesChecked(){
 function cardNumberValid(cardNumber){
     return creditCardRegex.test(cardNumber.value);
 }
+//custom credit card msg
+const creditCardMsg= document.createElement('p');
+creditCardMsg.style.color= 'red';
+creditCardMsg.textContent= '';
 
 //zip validation
 function zipValid(zip){
@@ -252,6 +258,13 @@ submitButton.addEventListener('click', (e)=>{
     if(paymentSelector.value== "credit card"){
         if(cardNumberValid(cardNumField)== false){
             cardNumField.style.borderColor= 'red';
+            if(cardNumField.value== ''){
+                paymentHeading.appendChild(creditCardMsg);
+                creditCardMsg.textContent= 'Please enter a credit card number';
+            }else{
+                paymentHeading.appendChild(creditCardMsg);
+                creditCardMsg.textContent= 'Please enter a credit card number (digit 13-16 numbers long)';
+            }
         } else if (cardNumberValid(cardNumField)== true){
             cardNumField.style.borderColor= '';
         }
@@ -292,5 +305,24 @@ submitButton.addEventListener('click', (e)=>{
 });
 
 
+//creating email validation real-time tooltip
+const emailTooltip= document.createElement('h4');
+emailTooltip.style.color='red';
+emailField.previousElementSibling.appendChild(emailTooltip);
+emailTooltip.textContent= "Email should be in the format 'name@email.com'";
+emailTooltip.style.display='none';
 
+//email tooltip event listener. 
+emailField.addEventListener('keyup', function(){
+    if((emailValid(emailField)== false)){
+        emailTooltip.style.display= 'block';
+    }else{
+        emailTooltip.style.display='none';
+    }
+});
+
+
+
+
+// Form provides at least one error message that changes depending on the error. For example, the email field displays a different error message when the email field is empty than it does when the email address is formatted incorrectly. *This is accomplished without the use of HTML5's built-in field validation.
 
