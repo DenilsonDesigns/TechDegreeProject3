@@ -267,6 +267,7 @@ submitButton.addEventListener('click', (e)=>{
             }
         } else if (cardNumberValid(cardNumField)== true){
             cardNumField.style.borderColor= '';
+            creditCardMsg.textContent='';
         }
     
         if(zipValid(zipCode)== false){
