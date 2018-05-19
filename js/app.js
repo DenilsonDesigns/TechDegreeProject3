@@ -41,7 +41,7 @@ window.onload= ()=>{
 }
 
 //event listener for "other" job role selection
-jobSelector.addEventListener('click', (e)=>{
+jobSelector.addEventListener('change', (e)=>{
     if(e.target.value== 'other'){
         yourJobRole.style.display= 'block';
     }else if(e.target.value != 'other'){
@@ -50,7 +50,7 @@ jobSelector.addEventListener('click', (e)=>{
 });
 
 //event listener for tshirt design
-tshirtDesign.addEventListener('click', (e)=>{
+tshirtDesign.addEventListener('change', (e)=>{
     if(e.target.value== 'js puns'){
         colorDiv.style.display= 'block';
         tshirtColOptions[0].style.display= 'block';
@@ -156,7 +156,7 @@ const paypalInfo= document.querySelector('#paypal-info');
 //bitcoin info
 const bitcoinInfo= document.querySelector('#bitcoin-info');
 //event listener to display correct info based on payment choice
-paymentSelector.addEventListener('click', (e)=>{
+paymentSelector.addEventListener('change', (e)=>{
     if(e.target.value== 'paypal'){
         creditCardField.style.display= 'none';
         paypalInfo.style.display= 'block';
